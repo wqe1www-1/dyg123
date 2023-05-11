@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link
+rel="stylesheet"
+href="https://unpkg.com/layui@2.7.6/dist/css/layui.css"
+/>
+<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<!-- <script src="./1.js"></script> -->
+<script src="https://www.makeapie.cn/dep/echarts/map/js/china.js"></script>
+<!-- 引入 layui.js -->
+<script src="https://unpkg.com/layui@2.7.6/dist/layui.js"></script>
+<link
+rel="stylesheet"
+href="https://unpkg.com/swiper@8/swiper-bundle.css"
+/>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.js"></script>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+
+</head>
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
+<style>
+
+#boxs{
+        width: 100px;
+        height: 100px;
+        background: #000;
+        position:relative;
+	animation:mymove 3s infinite;
+    }
+    #box1{
+        width: 100px;
+        height: 100px;
+        background: red;
+        position:relative;
+	animation:mymove1 3s infinite;
+    margin-left: 200px;
+    }
+    #box2{
+        width: 1px;
+        height: 1px;
+        background: blue;
+    }
+    #box3{
+        margin-top: 40px;
+        width: 100px;
+        height: 100px;
+        background: blue;
+    }
+
+
+
+
+    @keyframes mymove1
+{
+	from {right:0px;}
+	to {right:200px;}
+}
+@keyframes mymove
+{
+	from {left:0px;}
+	to {left:200px;}
+}
+    .begin {
+        width: 150px;
+        height: 50px;
+        margin-left: 45%;
+    }
+
+    #box {
+        width: 600px;
+        height: 500px;
+        border: 1px #000 solid;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #head {
+        width: 100%;
+        height: 50px;
+        border: 1px #000 solid;
+    }
+
+    #head p {
+        line-height: 25px;
+        float: left;
+        padding-left: 30%;
+    }
+
+    #frame {
+        width: 100%;
+        height: 89%;
+    }
+
+    .block {
+        width: 26%;
+        height: 25%;
+        margin-left: 1%;
+        margin: 20px;
+        float: left;
+        border-radius: 60px;
+    border: solid 1px #000;
+     
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<body>
+    <button onclick="begin()" class="begin">开始</button>
+    <div id="box">
+        <div id="head">
+            <p>倒计时 <span></span></p>
+            <p>得分 <span>0</span></p>
+        </div>
+        <div id="frame">
+
+        </div>
+
+    </div>
+    <div id="boxs"></div>
+    <div id="box1"></div>
+    <div id="box2"></div>
+    <div id="box3"></div>
+</body>
+<script>
+
+var div=$("#box2");
+  var div2=$("#box3");
+  div.animate({height:'100px',width:'100px',},3000);
+  div2.animate({height:'0px',width:'0px',},3000);
+
+    var countdown = 60; // 60秒
+    var arr = [] // 随机数
+    var score = 0 // 分数
+    var seconds = 1000 // 时间
+    var timer //  定时器
+
+    function begin() {
+        var decide = setTimeout(function () {
+            if (countdown === 0) {
+             alert('游戏结束')
+             location.reload();
+                $('.block').html('');
+            } else {
+                countdown--;
+                if (score <= 10) {
+                    timp(1000)
+                } 
+              
+            }
+            begin()
+            $('#head span').eq(0).html(countdown) 
+        }, 2000)
+    }
+
+
+    //定时器
+    function timp(second) {
+        timer = setInterval(function () {
+            $('.block').html('');
+            arrive()
+           
+        }, second);
+    }
+
+
+    $('.begin').click(function () {
+        $('.begin').css('pointer-events', 'none')
+        arrive()
+    })
+
+    // 随机数
+    function arrive() {
+        for (var c = 0; c < 4; c++) {
+            var RandomNumber = Math.floor(Math.random() * 9);
+            if (arr.indexOf(RandomNumber) == -1) {
+                arr[c] = RandomNumber
+            } else {
+                c--;
+            }
+        }
+        tuslice()
+    }
+
+    //  循环图片
+    function tuslice() {
+        var tu = ''
+        arr.sort((a, b) => {
+            return a - b
+        })
+
+        for (let i in arr) {
+            if (i < 3) {
+                $('.block').eq(arr[i]).html(
+                    `<img    src="https://cdn.nlark.com/yuque/0/2022/png/29209509/1659663759395-24b8fa00-d35d-486c-b3b5-d445ed154732.png" alt="" class='slice' onclick="ClickScore(${i})">`
+                )
+            } else {
+                $('.block').eq(arr[i]).html(
+                    `<img  src="https://cdn.nlark.com/yuque/0/2022/png/29209509/1659663759428-5c5e8e3f-b2fc-4162-a7f0-f8e2b3941922.png" alt="" class='slice' onclick="ClickScore(${i})">`
+                )
+            }
+        }
+        var div1=$("img");
+  div1.animate({height:'130px',width:'130px',margin: 'auto',marginTop:'-30px'},1000);
+    
+    }
+
+    
+    // 点击图片
+    function ClickScore(i) {
+        if (i < 3) {
+            score++
+            
+        } else {
+            score--
+        }
+
+        $('#head span').eq(1).html(score)
+    }
+
+    //渲染到页面
+    var splicing = ''
+    for (var s = 0; s <= 8; s++) {
+        splicing += '<div class="block">'
+        splicing += '</div>'
+    }
+    $('#frame').html(splicing)
+    $('.block').on('click','img',function(
+        
+    ){
+        $(this).css('display','none');
+    })
+
+</script>
+
+</html>  
